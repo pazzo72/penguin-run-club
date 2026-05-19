@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const links = [
@@ -78,7 +78,7 @@ function useCleanLogo(src: string): string {
         }
         ctx.putImageData(d2, 0, 0);
         setUrl(cv.toDataURL('image/png'));
-      } catch (e) {
+      } catch {
         // fallback: use original
       }
     };
