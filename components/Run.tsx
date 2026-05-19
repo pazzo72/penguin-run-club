@@ -34,88 +34,128 @@ const events = [
 
 export default function Run() {
   return (
-    <section id="run" className="py-32" style={{ background: '#F0F4F7' }}>
+    <section id="run" style={{ padding: '10rem 0', background: '#F5F0E8' }}>
       <div className="max-w-5xl mx-auto px-8">
-        <motion.h2
-          className="text-5xl md:text-6xl tracking-tighter font-bold mb-16 text-center"
-          style={{ color: 'rgba(13,27,42,0.92)' }}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.7 }}
-        >
-          I prossimi run.
-        </motion.h2>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.8 }}
+          style={{ display: 'flex', alignItems: 'center', gap: '2rem', marginBottom: '5rem' }}
+        >
+          <div style={{ flex: 1, height: '1px', background: 'rgba(10,14,22,0.1)' }} />
+          <span style={{
+            fontFamily: 'var(--serif)',
+            fontSize: '0.7rem',
+            fontWeight: 500,
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+            color: 'rgba(10,14,22,0.35)',
+            whiteSpace: 'nowrap',
+          }}>I prossimi run</span>
+          <div style={{ flex: 1, height: '1px', background: 'rgba(10,14,22,0.1)' }} />
+        </motion.div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(290px,1fr))', gap: '1px', background: 'rgba(10,14,22,0.08)' }}>
           {events.map((ev, i) => (
             <motion.div
               key={i}
-              className="rounded-2xl p-8 flex flex-col"
-              style={{
-                background: ev.highlighted ? '#FFFFFF' : '#FFFFFF',
-                border: ev.highlighted
-                  ? '1.5px solid #2C4A6E'
-                  : '1px solid rgba(13,27,42,0.1)',
-                boxShadow: ev.highlighted ? '0 0 32px rgba(44,74,110,0.12)' : 'none',
-              }}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6, delay: i * 0.12 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.7, delay: i * 0.1 }}
+              style={{
+                padding: '2.5rem',
+                display: 'flex',
+                flexDirection: 'column',
+                background: ev.highlighted ? '#0A0E16' : '#FDFAF5',
+                position: 'relative',
+                transition: 'transform 0.25s, box-shadow 0.25s',
+              }}
+              whileHover={{ y: -3, boxShadow: '0 12px 40px rgba(10,14,22,0.08)' }}
             >
               {ev.badge && (
-                <span
-                  className="inline-block self-start mb-4 px-3 py-1 rounded-full text-xs font-semibold tracking-wide text-white"
-                  style={{ background: '#E8733A' }}
-                >
-                  {ev.badge}
-                </span>
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <span style={{
+                    fontFamily: 'var(--serif)',
+                    fontSize: '0.62rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    color: '#C9A55A',
+                  }}>{ev.badge}</span>
+                </div>
               )}
 
-              <div className="flex items-baseline gap-3 mb-2">
-                <span
-                  className="text-3xl font-bold tracking-tight"
-                  style={{ color: ev.highlighted ? '#2C4A6E' : 'rgba(13,27,42,0.9)' }}
-                >
-                  {ev.distance}
-                </span>
-                <span className="text-lg font-semibold tracking-tight" style={{ color: 'rgba(13,27,42,0.85)' }}>
-                  {ev.title}
-                </span>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                <span style={{
+                  fontFamily: 'var(--serif)',
+                  fontSize: '3rem',
+                  fontWeight: 300,
+                  fontStyle: 'italic',
+                  lineHeight: 1,
+                  letterSpacing: '-0.02em',
+                  color: ev.highlighted ? '#C9A55A' : 'rgba(10,14,22,0.88)',
+                }}>{ev.distance}</span>
+                <span style={{
+                  fontFamily: 'var(--serif)',
+                  fontSize: '1.1rem',
+                  fontWeight: 300,
+                  fontStyle: 'italic',
+                  color: ev.highlighted ? 'rgba(255,255,255,0.8)' : 'rgba(10,14,22,0.7)',
+                }}>{ev.title}</span>
               </div>
 
-              <p className="text-sm mb-1" style={{ color: 'rgba(13,27,42,0.5)' }}>
-                {ev.location}
-              </p>
-              <p className="text-sm font-medium mb-6" style={{ color: 'rgba(13,27,42,0.6)' }}>
-                {ev.time}
-              </p>
+              <p style={{
+                fontFamily: 'var(--serif)',
+                fontSize: '0.85rem',
+                fontWeight: 300,
+                letterSpacing: '0.02em',
+                color: ev.highlighted ? 'rgba(255,255,255,0.4)' : 'rgba(10,14,22,0.4)',
+                marginBottom: '0.2rem',
+              }}>{ev.location}</p>
+
+              <p style={{
+                fontFamily: 'var(--serif)',
+                fontSize: '0.85rem',
+                fontWeight: 500,
+                letterSpacing: '0.04em',
+                color: ev.highlighted ? 'rgba(255,255,255,0.6)' : 'rgba(10,14,22,0.5)',
+                marginBottom: '2rem',
+              }}>{ev.time}</p>
 
               {ev.note && (
-                <p className="text-xs mb-5 leading-relaxed" style={{ color: 'rgba(13,27,42,0.4)' }}>
-                  {ev.note}
-                </p>
+                <p style={{
+                  fontFamily: 'var(--serif)',
+                  fontSize: '0.8rem',
+                  fontWeight: 300,
+                  fontStyle: 'italic',
+                  lineHeight: 1.5,
+                  color: ev.highlighted ? 'rgba(255,255,255,0.3)' : 'rgba(10,14,22,0.35)',
+                  marginBottom: '1.5rem',
+                }}>{ev.note}</p>
               )}
 
-              <div className="mt-auto">
+              <div style={{ marginTop: 'auto' }}>
                 <motion.button
-                  className="w-full py-3 rounded-xl text-sm font-semibold tracking-wide transition-all"
-                  style={
-                    ev.highlighted
-                      ? {
-                          background: '#2C4A6E',
-                          color: '#FFFFFF',
-                          boxShadow: '0 0 20px rgba(44,74,110,0.27)',
-                        }
-                      : {
-                          background: 'transparent',
-                          color: '#2C4A6E',
-                          border: '1.5px solid #2C4A6E',
-                        }
-                  }
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ opacity: 0.88, y: -1 }}
+                  whileTap={{ opacity: 1, y: 0 }}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem',
+                    borderRadius: '0.2rem',
+                    fontFamily: 'var(--serif)',
+                    fontSize: '0.85rem',
+                    fontWeight: 400,
+                    fontStyle: 'italic',
+                    letterSpacing: '0.06em',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    background: ev.highlighted ? '#C9A55A' : 'transparent',
+                    color: ev.highlighted ? '#0A0E16' : 'rgba(10,14,22,0.88)',
+                    border: ev.highlighted ? 'none' : '1px solid rgba(10,14,22,0.2)',
+                  }}
                 >
                   Partecipo
                 </motion.button>

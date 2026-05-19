@@ -4,38 +4,58 @@ import { motion } from 'framer-motion';
 
 export default function Manifesto() {
   return (
-    <section id="manifesto" className="py-32" style={{ background: '#F0F4F7' }}>
+    <section id="manifesto" style={{ padding: '10rem 0', background: '#F5F0E8' }}>
       <div className="max-w-4xl mx-auto px-8 text-center">
-        <motion.h2
-          className="text-5xl md:text-6xl tracking-tighter font-bold"
-          style={{ color: 'rgba(13,27,42,0.92)' }}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.7 }}
-        >
-          Non siamo una squadra.
-        </motion.h2>
 
         <motion.div
-          className="my-10 mx-auto"
-          style={{ height: '1px', maxWidth: '480px', background: 'rgba(13,27,42,0.12)' }}
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-        />
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8 }}
+        >
+          {/* Hairline top */}
+          <div style={{ width: '48px', height: '1px', background: '#C9A55A', margin: '0 auto 3rem' }} />
+
+          <h2 style={{
+            fontFamily: 'var(--serif)',
+            fontSize: 'clamp(2.5rem,6vw,5rem)',
+            fontWeight: 300,
+            fontStyle: 'italic',
+            lineHeight: 1,
+            letterSpacing: '-0.02em',
+            color: 'rgba(10,14,22,0.88)',
+          }}>
+            Non siamo una squadra.
+          </h2>
+        </motion.div>
 
         <motion.p
-          className="text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
-          style={{ color: 'rgba(13,27,42,0.55)' }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          transition={{ duration: 0.7, delay: 0.25 }}
+          style={{
+            fontFamily: 'var(--serif)',
+            fontSize: 'clamp(1.1rem,2.5vw,1.5rem)',
+            fontWeight: 300,
+            fontStyle: 'italic',
+            lineHeight: 1.75,
+            letterSpacing: '0.01em',
+            color: 'rgba(10,14,22,0.5)',
+            maxWidth: '38rem',
+            margin: '3rem auto 0',
+          }}
         >
           Siamo un branco di solitari che hanno scelto la stessa direzione.
         </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+          style={{ width: '48px', height: '1px', background: '#C9A55A', margin: '3rem auto 0' }}
+        />
       </div>
     </section>
   );

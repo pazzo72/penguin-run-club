@@ -1,42 +1,77 @@
 'use client';
 
 const links = [
-  { label: 'Storia', href: '#storia' },
+  { label: 'Storia',    href: '#storia'    },
   { label: 'Manifesto', href: '#manifesto' },
-  { label: 'Run', href: '#run' },
+  { label: 'Run',       href: '#run'       },
   { label: 'Community', href: '#community' },
-  { label: 'Contatti', href: '#contatti' },
+  { label: 'Contatti',  href: '#contatti'  },
 ];
 
 const socials = [
-  { label: 'IG', href: '#' },
-  { label: 'Strava', href: '#' },
-  { label: 'WA', href: '#' },
+  { label: 'Instagram', href: '#' },
+  { label: 'Strava',    href: '#' },
+  { label: 'WhatsApp',  href: '#' },
 ];
 
 export default function Footer() {
+  const hov = (e: React.MouseEvent<HTMLAnchorElement>) =>
+    (e.currentTarget.style.color = 'rgba(255,255,255,0.7)');
+  const lea = (e: React.MouseEvent<HTMLAnchorElement>) =>
+    (e.currentTarget.style.color = 'rgba(255,255,255,0.3)');
+
   return (
-    <footer className="py-16" style={{ background: '#0D1B2A' }}>
+    <footer style={{ padding: '5rem 0 3rem', background: '#0A0E16', borderTop: '1px solid rgba(201,165,90,0.1)' }}>
       <div className="max-w-7xl mx-auto px-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10 pb-10" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr auto auto',
+          gap: '3rem',
+          alignItems: 'start',
+          paddingBottom: '3rem',
+          borderBottom: '1px solid rgba(255,255,255,0.05)',
+        }}>
+
+          {/* Brand */}
           <div>
-            <p className="font-bold tracking-widest text-sm uppercase mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>
+            <p style={{
+              fontFamily: 'var(--serif)',
+              fontSize: '1.5rem',
+              fontWeight: 300,
+              fontStyle: 'italic',
+              letterSpacing: '-0.02em',
+              color: 'rgba(255,255,255,0.55)',
+              marginBottom: '0.5rem',
+            }}>
               Penguin Run Club
             </p>
-            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>
-              Be the penguin.
-            </p>
+            <span style={{
+              fontFamily: 'var(--serif)',
+              fontSize: '0.65rem',
+              fontWeight: 500,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'rgba(201,165,90,0.4)',
+            }}>Be the penguin.</span>
           </div>
 
-          <ul className="flex flex-wrap gap-6">
+          {/* Nav */}
+          <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', listStyle: 'none', paddingTop: '0.25rem' }}>
             {links.map((l) => (
               <li key={l.href}>
                 <a
                   href={l.href}
-                  className="text-xs tracking-wide transition-colors"
-                  style={{ color: 'rgba(255,255,255,0.45)' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
+                  style={{
+                    fontFamily: 'var(--serif)',
+                    fontSize: '0.82rem',
+                    fontWeight: 300,
+                    fontStyle: 'italic',
+                    color: 'rgba(255,255,255,0.3)',
+                    textDecoration: 'none',
+                    transition: 'color 0.2s',
+                  }}
+                  onMouseEnter={hov}
+                  onMouseLeave={lea}
                 >
                   {l.label}
                 </a>
@@ -44,15 +79,23 @@ export default function Footer() {
             ))}
           </ul>
 
-          <ul className="flex gap-5">
+          {/* Socials */}
+          <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', listStyle: 'none', paddingTop: '0.25rem' }}>
             {socials.map((s) => (
-              <li key={s.href}>
+              <li key={s.label}>
                 <a
                   href={s.href}
-                  className="text-xs tracking-widest transition-colors"
-                  style={{ color: 'rgba(255,255,255,0.45)' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
+                  style={{
+                    fontFamily: 'var(--serif)',
+                    fontSize: '0.82rem',
+                    fontWeight: 300,
+                    fontStyle: 'italic',
+                    color: 'rgba(255,255,255,0.3)',
+                    textDecoration: 'none',
+                    transition: 'color 0.2s',
+                  }}
+                  onMouseEnter={hov}
+                  onMouseLeave={lea}
                 >
                   {s.label}
                 </a>
@@ -61,8 +104,17 @@ export default function Footer() {
           </ul>
         </div>
 
-        <p className="pt-8 text-center text-xs" style={{ color: 'rgba(255,255,255,0.22)' }}>
-          © 2025 Penguin Run Club.
+        <p style={{
+          paddingTop: '2rem',
+          textAlign: 'center',
+          fontFamily: 'var(--serif)',
+          fontSize: '0.6rem',
+          fontWeight: 500,
+          letterSpacing: '0.18em',
+          textTransform: 'uppercase',
+          color: 'rgba(255,255,255,0.15)',
+        }}>
+          © 2025 Penguin Run Club — All rights reserved
         </p>
       </div>
     </footer>

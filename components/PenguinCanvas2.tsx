@@ -69,7 +69,7 @@ export default function PenguinCanvas2({ shouldPreload }: Props) {
     const img = imagesRef.current[frameIndex];
     const cw = canvas.width;
     const ch = canvas.height;
-    ctx.fillStyle = '#F0F4F7';
+    ctx.fillStyle = '#F5F0E8';
     ctx.fillRect(0, 0, cw, ch);
     if (img && img.complete && img.naturalWidth > 0) {
       const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
@@ -123,9 +123,7 @@ export default function PenguinCanvas2({ shouldPreload }: Props) {
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) startLoading();
-      },
+      (entries) => { if (entries[0].isIntersecting) startLoading(); },
       { threshold: 0.05 }
     );
     observer.observe(wrapper);
@@ -168,47 +166,61 @@ export default function PenguinCanvas2({ shouldPreload }: Props) {
     }
   });
 
+  const beatTextStyle: React.CSSProperties = {
+    fontFamily: 'var(--serif)',
+    fontWeight: 300,
+    fontStyle: 'italic',
+    letterSpacing: '-0.02em',
+    lineHeight: 1,
+    fontSize: 'clamp(2.5rem,8vw,9rem)',
+    color: 'rgba(10,14,22,0.88)',
+    textShadow: '0 2px 24px rgba(245,240,232,0.5)',
+    margin: 0,
+  };
+
   return (
     <div ref={wrapperRef} style={{ height: '500vh', position: 'relative' }}>
       <div className="sticky top-0 overflow-hidden" style={{ height: '100vh' }}>
 
-        {/* Loader (shown if not yet loaded when user arrives) */}
+        {/* Loader */}
         {!loaderDone && (
           <div
             className="absolute inset-0 z-50 flex flex-col items-center justify-center"
             style={{
-              background: '#F0F4F7',
+              background: '#F5F0E8',
               opacity: allLoaded ? 0 : 1,
-              transition: 'opacity 0.6s ease',
+              transition: 'opacity 0.7s ease',
               pointerEvents: allLoaded ? 'none' : 'auto',
             }}
           >
-            <div className="relative w-10 h-10 mb-10">
-              <div
-                className="absolute inset-0 rounded-full border"
-                style={{ borderColor: 'rgba(44,74,110,0.2)' }}
-              />
+            <div className="relative mb-10" style={{ width: '2rem', height: '2rem' }}>
+              <div className="absolute inset-0 rounded-full" style={{ border: '1px solid rgba(201,165,90,0.15)' }} />
               <motion.div
-                className="absolute inset-0 rounded-full border border-transparent"
-                style={{ borderTopColor: '#2C4A6E' }}
+                className="absolute inset-0 rounded-full"
+                style={{ border: '1px solid transparent', borderTopColor: '#C9A55A' }}
                 animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                transition={{ duration: 1.2, repeat: Infinity, ease: 'linear' }}
               />
             </div>
-            <div
-              className="w-56 rounded-full overflow-hidden"
-              style={{ height: '1px', background: 'rgba(13,27,42,0.1)' }}
-            >
+            <div className="rounded-full overflow-hidden" style={{ width: '10rem', height: '1px', background: 'rgba(10,14,22,0.08)' }}>
               <div
-                className="h-full rounded-full"
                 style={{
                   width: `${loadProgress}%`,
-                  background: '#2C4A6E',
-                  transition: 'width 0.1s linear',
+                  height: '100%',
+                  background: '#C9A55A',
+                  transition: 'width 0.12s linear',
                 }}
               />
             </div>
-            <p className="mt-5 text-xs tracking-[0.3em] uppercase" style={{ color: 'rgba(13,27,42,0.35)' }}>
+            <p style={{
+              marginTop: '1.5rem',
+              fontFamily: 'var(--serif)',
+              fontSize: '0.65rem',
+              fontWeight: 500,
+              letterSpacing: '0.3em',
+              textTransform: 'uppercase',
+              color: 'rgba(10,14,22,0.3)',
+            }}>
               {loadProgress}%
             </p>
           </div>
@@ -217,7 +229,7 @@ export default function PenguinCanvas2({ shouldPreload }: Props) {
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full"
-          style={{ opacity: allLoaded ? 1 : 0, transition: 'opacity 0.4s ease 0.2s' }}
+          style={{ opacity: allLoaded ? 1 : 0, transition: 'opacity 0.5s ease 0.2s' }}
         />
 
         <div className="absolute inset-0 pointer-events-none">
@@ -227,38 +239,23 @@ export default function PenguinCanvas2({ shouldPreload }: Props) {
             className="absolute inset-0 flex flex-col items-center justify-center px-8"
             style={{ opacity: beatAOpacity, y: beatAY }}
           >
-            <h2 className="text-7xl md:text-9xl tracking-tighter font-bold text-center" style={{ color: '#0D1B2A' }}>
-              IL BRANCO SI MUOVE.
-            </h2>
-            <p className="mt-4 text-base md:text-xl text-center" style={{ color: 'rgba(13,27,42,0.65)' }}>
-              Centinaia di passi. Una sola direzione.
-            </p>
+            <h2 style={{ ...beatTextStyle, textAlign: 'center' }}>Il branco si muove.</h2>
           </motion.div>
 
           {/* Beat B — sinistra */}
           <motion.div
-            className="absolute inset-0 flex flex-col justify-center pl-12 md:pl-28"
-            style={{ opacity: beatBOpacity, y: beatBY }}
+            className="absolute inset-0 flex flex-col justify-center"
+            style={{ opacity: beatBOpacity, y: beatBY, paddingLeft: 'clamp(3rem,7vw,7rem)' }}
           >
-            <h2 className="text-6xl md:text-8xl tracking-tighter font-bold" style={{ color: '#0D1B2A' }}>
-              LA FORZA DEL GRUPPO.
-            </h2>
-            <p className="mt-4 text-base md:text-xl" style={{ color: 'rgba(13,27,42,0.65)' }}>
-              Insieme, ma ognuno a modo suo.
-            </p>
+            <h2 style={{ ...beatTextStyle, textAlign: 'left' }}>La forza del gruppo.</h2>
           </motion.div>
 
           {/* Beat C — destra */}
           <motion.div
-            className="absolute inset-0 flex flex-col items-end justify-center pr-12 md:pr-28"
-            style={{ opacity: beatCOpacity, y: beatCY }}
+            className="absolute inset-0 flex flex-col items-end justify-center"
+            style={{ opacity: beatCOpacity, y: beatCY, paddingRight: 'clamp(3rem,7vw,7rem)' }}
           >
-            <h2 className="text-6xl md:text-8xl tracking-tighter font-bold text-right" style={{ color: '#0D1B2A' }}>
-              IL GHIACCIAIO CHIAMA.
-            </h2>
-            <p className="mt-4 text-base md:text-xl text-right" style={{ color: 'rgba(13,27,42,0.65)' }}>
-              Ogni run è un territorio da conquistare.
-            </p>
+            <h2 style={{ ...beatTextStyle, textAlign: 'right' }}>Il ghiacciaio chiama.</h2>
           </motion.div>
 
           {/* Beat D — centrato */}
@@ -266,20 +263,24 @@ export default function PenguinCanvas2({ shouldPreload }: Props) {
             className="absolute inset-0 flex flex-col items-center justify-center px-8"
             style={{ opacity: beatDOpacity, y: beatDY }}
           >
-            <h2 className="text-7xl md:text-9xl tracking-tighter font-bold text-center" style={{ color: '#0D1B2A' }}>
-              UNISCITI AL BRANCO.
-            </h2>
-            <p className="mt-4 text-base md:text-xl text-center" style={{ color: 'rgba(13,27,42,0.65)' }}>
-              Il prossimo run ti aspetta.
-            </p>
+            <h2 style={{ ...beatTextStyle, textAlign: 'center' }}>Unisciti al branco.</h2>
           </motion.div>
 
           {/* Final: RUN YOUR WAY */}
           {finalPhase > 0 && (
             <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
               <h2
-                className="tracking-widest font-bold text-center leading-none"
-                style={{ fontSize: 'clamp(3rem, 10vw, 10rem)', color: 'rgba(13,27,42,0.9)' }}
+                style={{
+                  fontFamily: 'var(--serif)',
+                  fontWeight: 300,
+                  fontStyle: 'italic',
+                  letterSpacing: '-0.01em',
+                  lineHeight: 1,
+                  fontSize: 'clamp(3rem,10vw,10rem)',
+                  color: 'rgba(10,14,22,0.88)',
+                  textAlign: 'center',
+                  margin: 0,
+                }}
                 aria-label={FINAL_TEXT}
               >
                 {FINAL_LETTERS.map((letter, i) => (
@@ -290,38 +291,33 @@ export default function PenguinCanvas2({ shouldPreload }: Props) {
                     transition={{ duration: 0.4, delay: i * 0.08, ease: 'easeOut' }}
                     style={{ display: 'inline-block' }}
                   >
-                    {letter === ' ' ? ' ' : letter}
+                    {letter === ' ' ? '\u00A0' : letter}
                   </motion.span>
                 ))}
               </h2>
-
             </div>
           )}
 
           {/* Scroll hint */}
           <motion.div
-            className="absolute bottom-8 left-0 right-0 flex flex-col items-center gap-3"
-            style={{ opacity: scrollHintOpacity }}
+            className="absolute bottom-10 left-0 right-0 flex flex-col items-center"
+            style={{ opacity: scrollHintOpacity, gap: '1rem' }}
           >
-            <span
-              className="text-xs tracking-[0.25em] uppercase"
-              style={{ color: 'rgba(13,27,42,0.6)' }}
-            >
+            <span style={{
+              fontFamily: 'var(--serif)',
+              fontSize: '0.62rem',
+              fontWeight: 500,
+              letterSpacing: '0.25em',
+              textTransform: 'uppercase',
+              color: 'rgba(10,14,22,0.4)',
+            }}>
               Scorri per continuare
             </span>
-            <motion.svg
-              width="16" height="24" viewBox="0 0 16 24" fill="none"
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <path
-                d="M8 2L8 20M8 20L2 14M8 20L14 14"
-                stroke="rgba(13,27,42,0.6)"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </motion.svg>
+            <motion.div
+              style={{ width: '1px', height: '40px', background: 'linear-gradient(to bottom, transparent, rgba(10,14,22,0.45))' }}
+              animate={{ y: [0, 7, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            />
           </motion.div>
 
         </div>

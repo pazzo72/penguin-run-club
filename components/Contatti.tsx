@@ -6,87 +6,130 @@ import { motion } from 'framer-motion';
 export default function Contatti() {
   const [form, setForm] = useState({ nome: '', email: '', messaggio: '' });
 
-  const inputStyle = {
-    background: 'transparent',
-    border: '1px solid rgba(13,27,42,0.2)',
-    color: 'rgba(13,27,42,0.85)',
-    borderRadius: '0.75rem',
-    padding: '0.85rem 1.1rem',
+  const fieldStyle: React.CSSProperties = {
     width: '100%',
-    fontSize: '0.9rem',
+    padding: '0.85rem 0',
+    fontFamily: 'var(--serif)',
+    fontStyle: 'italic',
+    fontWeight: 300,
+    fontSize: '1rem',
+    background: 'transparent',
+    border: 'none',
+    borderBottom: '1px solid rgba(10,14,22,0.15)',
+    color: 'rgba(10,14,22,0.9)',
     outline: 'none',
-    transition: 'border-color 0.2s ease',
+    transition: 'border-color 0.25s',
   };
 
-  return (
-    <section id="contatti" className="py-32" style={{ background: '#F0F4F7' }}>
-      <div className="max-w-2xl mx-auto px-8">
-        <motion.h2
-          className="text-5xl md:text-6xl tracking-tighter font-bold mb-4 text-center"
-          style={{ color: 'rgba(13,27,42,0.92)' }}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.7 }}
-        >
-          Scrivici.
-        </motion.h2>
+  const onFocus = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    (e.currentTarget.style.borderBottomColor = '#C9A55A');
+  const onBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    (e.currentTarget.style.borderBottomColor = 'rgba(10,14,22,0.15)');
 
-        <motion.p
-          className="text-lg text-center mb-14"
-          style={{ color: 'rgba(13,27,42,0.55)' }}
-          initial={{ opacity: 0, y: 20 }}
+  return (
+    <section id="contatti" style={{ padding: '10rem 0', background: '#F5F0E8' }}>
+      <div className="max-w-2xl mx-auto px-8">
+
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.8 }}
         >
-          Hai domande? Vuoi organizzare un run? Siamo qui.
-        </motion.p>
+          <span style={{
+            fontFamily: 'var(--serif)',
+            fontSize: '0.7rem',
+            fontWeight: 500,
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+            color: 'rgba(201,165,90,0.7)',
+            display: 'block',
+            marginBottom: '1.5rem',
+          }}>— Scrivici</span>
+
+          <h2 style={{
+            fontFamily: 'var(--serif)',
+            fontSize: 'clamp(2.5rem,5vw,4rem)',
+            fontWeight: 300,
+            fontStyle: 'italic',
+            lineHeight: 1,
+            letterSpacing: '-0.02em',
+            color: 'rgba(10,14,22,0.88)',
+            marginBottom: '0.75rem',
+          }}>
+            Parliamoci.
+          </h2>
+
+          <p style={{
+            fontFamily: 'var(--serif)',
+            fontSize: '1.1rem',
+            fontWeight: 300,
+            fontStyle: 'italic',
+            color: 'rgba(10,14,22,0.45)',
+            marginBottom: '3.5rem',
+          }}>
+            Hai domande? Vuoi organizzare un run? Siamo qui.
+          </p>
+        </motion.div>
 
         <motion.form
-          className="flex flex-col gap-4"
+          className="flex flex-col"
           onSubmit={(e) => e.preventDefault()}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, delay: 0.25 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          style={{ gap: '1.75rem' }}
         >
           <input
             type="text"
             placeholder="Nome"
             value={form.nome}
             onChange={(e) => setForm({ ...form, nome: e.target.value })}
-            style={inputStyle}
-            onFocus={(e) => (e.currentTarget.style.borderColor = '#2C4A6E')}
-            onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(13,27,42,0.2)')}
+            style={fieldStyle}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
           <input
             type="email"
             placeholder="Email"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            style={inputStyle}
-            onFocus={(e) => (e.currentTarget.style.borderColor = '#2C4A6E')}
-            onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(13,27,42,0.2)')}
+            style={fieldStyle}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
           <textarea
             placeholder="Il tuo messaggio"
             rows={4}
             value={form.messaggio}
             onChange={(e) => setForm({ ...form, messaggio: e.target.value })}
-            style={{ ...inputStyle, resize: 'vertical', fontFamily: 'inherit' }}
-            onFocus={(e) => (e.currentTarget.style.borderColor = '#2C4A6E')}
-            onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(13,27,42,0.2)')}
+            style={{ ...fieldStyle, resize: 'vertical', fontFamily: 'var(--serif)' }}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
-          <motion.button
-            type="submit"
-            className="mt-2 py-4 px-8 rounded-full text-white font-semibold text-sm tracking-wide"
-            style={{ background: '#2C4A6E' }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Manda il messaggio →
-          </motion.button>
+          <div style={{ paddingTop: '0.5rem' }}>
+            <motion.button
+              type="submit"
+              style={{
+                padding: '0.7rem 1.8rem',
+                background: '#C9A55A',
+                color: '#0A0E16',
+                fontFamily: 'var(--serif)',
+                fontStyle: 'italic',
+                fontWeight: 400,
+                fontSize: '0.85rem',
+                letterSpacing: '0.06em',
+                border: 'none',
+                borderRadius: '0.2rem',
+                cursor: 'pointer',
+              }}
+              whileHover={{ opacity: 0.88, y: -1 }}
+              whileTap={{ opacity: 1, y: 0 }}
+            >
+              Manda il messaggio →
+            </motion.button>
+          </div>
         </motion.form>
       </div>
     </section>
