@@ -19,6 +19,35 @@ const links = [
   { label: 'Contatti',  href: '#contatti'  },
 ];
 
+/** Nav link with gold gradient on hover — state-based, no DOM manipulation */
+function NavLink({ href, label }: { href: string; label: string }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <a
+      href={href}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        fontFamily: 'var(--serif)',
+        fontSize: '1rem',
+        fontWeight: 400,
+        fontStyle: 'italic',
+        letterSpacing: '0.06em',
+        textDecoration: 'none',
+        padding: '0.5rem 0.9rem',
+        display: 'block',
+        transition: 'color 0.25s',
+        ...(hovered
+          ? { background: GOLD_BG, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }
+          : { color: 'rgba(255,255,255,0.55)' }
+        ),
+      }}
+    >
+      {label}
+    </a>
+  );
+}
+
 function useCleanLogo(src: string): string {
   const [url, setUrl] = useState(src);
   useEffect(() => {
@@ -70,10 +99,6 @@ function useCleanLogo(src: string): string {
   return url;
 }
 
-const applyGoldHover = (e: React.MouseEvent<HTMLAnchorElement>) =>
-  Object.assign(e.currentTarget.style, { background: GOLD_BG, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' });
-const removeGoldHover = (e: React.MouseEvent<HTMLAnchorElement>) =>
-  Object.assign(e.currentTarget.style, { background: '', WebkitBackgroundClip: '', backgroundClip: '', color: 'rgba(255,255,255,0.55)' });
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -117,25 +142,7 @@ export default function Navbar() {
           <ul className="hidden md:flex items-center" style={{ gap: 0, listStyle: 'none' }}>
             {links.map((l) => (
               <li key={l.href}>
-                <a
-                  href={l.href}
-                  style={{
-                    fontFamily: 'var(--serif)',
-                    fontSize: '1rem',
-                    fontWeight: 400,
-                    fontStyle: 'italic',
-                    letterSpacing: '0.06em',
-                    color: 'rgba(255,255,255,0.55)',
-                    textDecoration: 'none',
-                    padding: '0.5rem 0.9rem',
-                    display: 'block',
-                    transition: 'color 0.25s',
-                  }}
-                  onMouseEnter={applyGoldHover}
-                  onMouseLeave={removeGoldHover}
-                >
-                  {l.label}
-                </a>
+                <NavLink href={l.href} label={l.label} />
               </li>
             ))}
             <li style={{ marginLeft: '1.5rem' }}>
