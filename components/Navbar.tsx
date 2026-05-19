@@ -73,7 +73,7 @@ function useCleanLogo(src: string): string {
 const applyGoldHover = (e: React.MouseEvent<HTMLAnchorElement>) =>
   Object.assign(e.currentTarget.style, { background: GOLD_BG, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' });
 const removeGoldHover = (e: React.MouseEvent<HTMLAnchorElement>) =>
-  Object.assign(e.currentTarget.style, { background: '', WebkitBackgroundClip: '', backgroundClip: '', color: '' });
+  Object.assign(e.currentTarget.style, { background: '', WebkitBackgroundClip: '', backgroundClip: '', color: 'rgba(255,255,255,0.55)' });
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
