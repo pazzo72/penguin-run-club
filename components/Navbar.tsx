@@ -3,6 +3,14 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const GOLD_BG = 'linear-gradient(160deg, #E8D08A 0%, #C9A55A 30%, #A07830 55%, #D4B06A 80%, #F0DC9A 100%)';
+const GOLD_TEXT = {
+  background: GOLD_BG,
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text',
+} as React.CSSProperties;
+
 const links = [
   { label: 'Storia',    href: '#storia'    },
   { label: 'Manifesto', href: '#manifesto' },
@@ -11,82 +19,61 @@ const links = [
   { label: 'Contatti',  href: '#contatti'  },
 ];
 
-/** Flood-fill from edges to remove white bg, then recolor body → gold 60%, belly → white */
 function useCleanLogo(src: string): string {
   const [url, setUrl] = useState(src);
-
   useEffect(() => {
     const img = new Image();
     img.onload = () => {
       try {
         const cv = document.createElement('canvas');
-        cv.width = img.width;
-        cv.height = img.height;
+        cv.width = img.width; cv.height = img.height;
         const ctx = cv.getContext('2d')!;
         ctx.drawImage(img, 0, 0);
-
         const d = ctx.getImageData(0, 0, cv.width, cv.height);
         const { data, width, height } = d;
         const visited = new Uint8Array(width * height);
         const queue: number[] = [];
-
         const seed = (x: number, y: number) => {
-          const idx = y * width + x;
-          if (visited[idx]) return;
+          const idx = y * width + x; if (visited[idx]) return;
           const i = idx * 4;
-          if (data[i] > 190 && data[i + 1] > 190 && data[i + 2] > 190) {
-            visited[idx] = 1;
-            queue.push(idx);
-          }
+          if (data[i] > 190 && data[i+1] > 190 && data[i+2] > 190) { visited[idx] = 1; queue.push(idx); }
         };
-
-        for (let x = 0; x < width; x++) { seed(x, 0); seed(x, height - 1); }
-        for (let y = 0; y < height; y++) { seed(0, y); seed(width - 1, y); }
-
+        for (let x = 0; x < width; x++) { seed(x, 0); seed(x, height-1); }
+        for (let y = 0; y < height; y++) { seed(0, y); seed(width-1, y); }
         let qi = 0;
         while (qi < queue.length) {
-          const idx = queue[qi++];
-          data[idx * 4 + 3] = 0;
-          const x = idx % width;
-          const y = Math.floor(idx / width);
+          const idx = queue[qi++]; data[idx*4+3] = 0;
+          const x = idx % width, y = Math.floor(idx / width);
           for (const [nx, ny] of [[x-1,y],[x+1,y],[x,y-1],[x,y+1]] as [number,number][]) {
             if (nx < 0 || nx >= width || ny < 0 || ny >= height) continue;
-            const ni = ny * width + nx;
-            if (visited[ni]) continue;
-            const pi = ni * 4;
-            if (data[pi] > 180 && data[pi + 1] > 180 && data[pi + 2] > 180) {
-              visited[ni] = 1;
-              queue.push(ni);
-            }
+            const ni = ny*width+nx; if (visited[ni]) continue;
+            const pi = ni*4;
+            if (data[pi]>180 && data[pi+1]>180 && data[pi+2]>180) { visited[ni]=1; queue.push(ni); }
           }
         }
-
         ctx.putImageData(d, 0, 0);
-
-        // Recolor: dark → gold 60%, light → white (belly)
         const d2 = ctx.getImageData(0, 0, cv.width, cv.height);
         const px = d2.data;
         for (let i = 0; i < px.length; i += 4) {
-          if (px[i + 3] > 0) {
-            const brightness = (px[i] + px[i + 1] + px[i + 2]) / 3;
-            if (brightness < 160) {
-              px[i] = 201; px[i + 1] = 165; px[i + 2] = 90; px[i + 3] = 153; // gold 60%
-            } else {
-              px[i] = 255; px[i + 1] = 255; px[i + 2] = 255; // white belly
-            }
+          if (px[i+3] > 0) {
+            const brightness = (px[i]+px[i+1]+px[i+2])/3;
+            if (brightness < 160) { px[i]=201; px[i+1]=165; px[i+2]=90; px[i+3]=153; }
+            else { px[i]=255; px[i+1]=255; px[i+2]=255; }
           }
         }
         ctx.putImageData(d2, 0, 0);
         setUrl(cv.toDataURL('image/png'));
-      } catch {
-        // fallback: use original
-      }
+      } catch { /* fallback */ }
     };
     img.src = src;
   }, [src]);
-
   return url;
 }
+
+const applyGoldHover = (e: React.MouseEvent<HTMLAnchorElement>) =>
+  Object.assign(e.currentTarget.style, { background: GOLD_BG, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' });
+const removeGoldHover = (e: React.MouseEvent<HTMLAnchorElement>) =>
+  Object.assign(e.currentTarget.style, { background: '', WebkitBackgroundClip: '', WebkitTextFillColor: '', backgroundClip: '', color: '' });
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -103,37 +90,26 @@ export default function Navbar() {
           borderBottom: '1px solid rgba(201,165,90,0.18)',
         }}
       >
-        <div
-          className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between"
-          style={{ height: '4.5rem' }}
-        >
-          {/* Logo */}
-          <a href="#" className="flex items-center select-none" style={{ gap: '0.875rem', textDecoration: 'none' }}>
+        <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between" style={{ height: '4.5rem' }}>
+
+          {/* Logo — enlarged, horizontal layout */}
+          <a href="#" className="flex items-center select-none" style={{ gap: '1rem', textDecoration: 'none' }}>
             <motion.div
               whileHover={{ scale: 1.08 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              style={{ width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              style={{ width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={logoUrl} alt="Penguin Run Club" style={{ height: '34px', width: 'auto' }} />
+              <img src={logoUrl} alt="Penguin Run Club" style={{ height: '46px', width: 'auto' }} />
             </motion.div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-              <span style={{
-                fontFamily: 'var(--serif)',
-                fontSize: '11px',
-                fontWeight: 500,
-                letterSpacing: '0.28em',
-                textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.88)',
-              }}>Penguin</span>
-              <span style={{
-                fontFamily: 'var(--serif)',
-                fontSize: '8px',
-                fontWeight: 500,
-                letterSpacing: '0.32em',
-                textTransform: 'uppercase',
-                color: 'rgba(201,165,90,0.6)',
-              }}>Run Club</span>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.55rem' }}>
+              <span style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 300, fontSize: '20px', letterSpacing: '0.04em', color: 'rgba(255,255,255,0.90)' }}>
+                Penguin
+              </span>
+              <span style={{ width: '1px', height: '13px', background: 'rgba(255,255,255,0.15)', display: 'inline-block', verticalAlign: 'middle' }} />
+              <span style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 300, fontSize: '14px', letterSpacing: '0.08em', ...GOLD_TEXT }}>
+                Run Club
+              </span>
             </div>
           </a>
 
@@ -145,7 +121,7 @@ export default function Navbar() {
                   href={l.href}
                   style={{
                     fontFamily: 'var(--serif)',
-                    fontSize: '0.8rem',
+                    fontSize: '1rem',
                     fontWeight: 400,
                     fontStyle: 'italic',
                     letterSpacing: '0.06em',
@@ -155,8 +131,8 @@ export default function Navbar() {
                     display: 'block',
                     transition: 'color 0.25s',
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.92)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
+                  onMouseEnter={applyGoldHover}
+                  onMouseLeave={removeGoldHover}
                 >
                   {l.label}
                 </a>
@@ -175,7 +151,7 @@ export default function Navbar() {
                   fontStyle: 'italic',
                   letterSpacing: '0.06em',
                   color: '#0A0E16',
-                  background: '#C9A55A',
+                  background: GOLD_BG,
                   textDecoration: 'none',
                 }}
                 whileHover={{ opacity: 0.88, y: -1 }}
@@ -193,24 +169,12 @@ export default function Navbar() {
             aria-label="Menu"
             style={{ gap: '5px', background: 'none', border: 'none', cursor: 'pointer' }}
           >
-            <motion.span
-              className="block rounded-full"
-              style={{ width: '22px', height: '1px', background: 'rgba(255,255,255,0.7)' }}
-              animate={menuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-              transition={{ duration: 0.28 }}
-            />
-            <motion.span
-              className="block rounded-full"
-              style={{ width: '22px', height: '1px', background: 'rgba(255,255,255,0.7)' }}
-              animate={menuOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
-              transition={{ duration: 0.18 }}
-            />
-            <motion.span
-              className="block rounded-full"
-              style={{ width: '22px', height: '1px', background: 'rgba(255,255,255,0.7)' }}
-              animate={menuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-              transition={{ duration: 0.28 }}
-            />
+            <motion.span className="block rounded-full" style={{ width: '22px', height: '1px', background: 'rgba(255,255,255,0.7)' }}
+              animate={menuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }} transition={{ duration: 0.28 }} />
+            <motion.span className="block rounded-full" style={{ width: '22px', height: '1px', background: 'rgba(255,255,255,0.7)' }}
+              animate={menuOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }} transition={{ duration: 0.18 }} />
+            <motion.span className="block rounded-full" style={{ width: '22px', height: '1px', background: 'rgba(255,255,255,0.7)' }}
+              animate={menuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }} transition={{ duration: 0.28 }} />
           </button>
         </div>
       </nav>
@@ -231,12 +195,7 @@ export default function Navbar() {
 
             <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', listStyle: 'none', marginBottom: '3rem' }}>
               {links.map((l, i) => (
-                <motion.li
-                  key={l.href}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.08 + i * 0.06, ease: 'easeOut' }}
-                >
+                <motion.li key={l.href} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 + i * 0.06, ease: 'easeOut' }}>
                   <a
                     href={l.href}
                     onClick={() => setMenuOpen(false)}
@@ -269,7 +228,7 @@ export default function Navbar() {
                   display: 'inline-block',
                   padding: '0.7rem 1.8rem',
                   borderRadius: '0.2rem',
-                  background: '#C9A55A',
+                  background: GOLD_BG,
                   color: '#0A0E16',
                   fontFamily: 'var(--serif)',
                   fontStyle: 'italic',
@@ -290,7 +249,8 @@ export default function Navbar() {
                 fontWeight: 500,
                 letterSpacing: '0.22em',
                 textTransform: 'uppercase',
-                color: 'rgba(201,165,90,0.4)',
+                ...GOLD_TEXT,
+                opacity: 0.5,
               }}>Be the penguin.</span>
             </div>
           </motion.div>
