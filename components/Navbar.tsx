@@ -11,45 +11,6 @@ const links = [
   { label: 'Contatti', href: '#contatti' },
 ];
 
-function PenguinLogo() {
-  return (
-    <svg width="32" height="38" viewBox="0 0 32 38" fill="none" aria-hidden="true">
-      {/* Body silhouette */}
-      <path
-        d="M16 1C10.2 1 5 6.1 5 12.5V25C5 31.1 9.9 37 16 37C22.1 37 27 31.1 27 25V12.5C27 6.1 21.8 1 16 1Z"
-        fill="white"
-        fillOpacity="0.92"
-      />
-      {/* White belly patch */}
-      <ellipse cx="16" cy="25" rx="6" ry="8" fill="white" fillOpacity="0.18" />
-      {/* Left eye */}
-      <circle cx="12.5" cy="13" r="2" fill="#0D1B2A" />
-      <circle cx="13.1" cy="12.4" r="0.6" fill="white" fillOpacity="0.5" />
-      {/* Right eye */}
-      <circle cx="19.5" cy="13" r="2" fill="#0D1B2A" />
-      <circle cx="20.1" cy="12.4" r="0.6" fill="white" fillOpacity="0.5" />
-      {/* Beak */}
-      <path d="M13.5 17L16 20L18.5 17Z" fill="#E8733A" />
-      {/* Left flipper */}
-      <path
-        d="M5 19Q1 23 3 29"
-        stroke="white"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        strokeOpacity="0.85"
-      />
-      {/* Right flipper */}
-      <path
-        d="M27 19Q31 23 29 29"
-        stroke="white"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        strokeOpacity="0.85"
-      />
-    </svg>
-  );
-}
-
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -72,7 +33,7 @@ export default function Navbar() {
               whileHover={{ scale: 1.06 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
-              <PenguinLogo />
+              <img src="/penguin-logo.jpeg" alt="Penguin Run Club" style={{ height: '38px', width: 'auto' }} />
             </motion.div>
             <div className="flex flex-col leading-none">
               <span
@@ -176,7 +137,7 @@ export default function Navbar() {
             />
 
             <div className="mb-12 opacity-30">
-              <PenguinLogo />
+              <img src="/penguin-logo.jpeg" alt="Penguin Run Club" style={{ height: '38px', width: 'auto' }} />
             </div>
 
             <ul className="flex flex-col items-center gap-6">
