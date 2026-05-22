@@ -11,6 +11,21 @@ const GOLD_TEXT = {
   backgroundClip: 'text',
 } as React.CSSProperties;
 
+/* ── Button token (sfondo scuro → outline oro) ───────── */
+const BTN_DARK: React.CSSProperties = {
+  display: 'block',
+  padding: '0.5rem 1.4rem',
+  background: 'transparent',
+  border: '1px solid rgba(201,165,90,0.5)',
+  borderRadius: 0,
+  color: '#C9A55A',
+  fontFamily: 'var(--serif)',
+  fontSize: '0.72rem', fontWeight: 500, fontStyle: 'normal',
+  letterSpacing: '0.2em', textTransform: 'uppercase',
+  textDecoration: 'none',
+  cursor: 'pointer',
+};
+
 const links = [
   { label: 'Storia',    href: '#storia'    },
   { label: 'Manifesto', href: '#manifesto' },
@@ -19,7 +34,6 @@ const links = [
   { label: 'Contatti',  href: '#contatti'  },
 ];
 
-/** Nav link with gold gradient on hover — state-based, no DOM manipulation */
 function NavLink({ href, label }: { href: string; label: string }) {
   const [hovered, setHovered] = useState(false);
   return (
@@ -99,7 +113,6 @@ function useCleanLogo(src: string): string {
   return url;
 }
 
-
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const logoUrl = useCleanLogo('/penguin-logo.jpeg');
@@ -117,7 +130,7 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between" style={{ height: '4.5rem' }}>
 
-          {/* Logo — enlarged, horizontal layout */}
+          {/* Logo */}
           <a href="#" className="flex items-center select-none" style={{ gap: '1rem', textDecoration: 'none' }}>
             <motion.div
               whileHover={{ scale: 1.08 }}
@@ -148,21 +161,9 @@ export default function Navbar() {
             <li style={{ marginLeft: '1.5rem' }}>
               <motion.a
                 href="#run"
-                style={{
-                  display: 'block',
-                  padding: '0.5rem 1.4rem',
-                  borderRadius: '0.2rem',
-                  fontFamily: 'var(--serif)',
-                  fontSize: '0.78rem',
-                  fontWeight: 400,
-                  fontStyle: 'italic',
-                  letterSpacing: '0.06em',
-                  color: '#0A0E16',
-                  background: GOLD_BG,
-                  textDecoration: 'none',
-                }}
-                whileHover={{ opacity: 0.88, y: -1 }}
-                whileTap={{ opacity: 1, y: 0 }}
+                style={BTN_DARK}
+                whileHover={{ borderColor: '#C9A55A', backgroundColor: 'rgba(201,165,90,0.06)', y: -1 }}
+                whileTap={{ y: 0 }}
               >
                 Prossimi run
               </motion.a>
@@ -228,36 +229,23 @@ export default function Navbar() {
             </ul>
 
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
-              <a
+              <motion.a
                 href="#run"
                 onClick={() => setMenuOpen(false)}
-                style={{
-                  display: 'inline-block',
-                  padding: '0.7rem 1.8rem',
-                  borderRadius: '0.2rem',
-                  background: GOLD_BG,
-                  color: '#0A0E16',
-                  fontFamily: 'var(--serif)',
-                  fontStyle: 'italic',
-                  fontWeight: 400,
-                  fontSize: '0.85rem',
-                  letterSpacing: '0.06em',
-                  textDecoration: 'none',
-                }}
+                style={{ ...BTN_DARK, display: 'inline-block' }}
+                whileHover={{ borderColor: '#C9A55A', backgroundColor: 'rgba(201,165,90,0.06)', y: -1 }}
+                whileTap={{ y: 0 }}
               >
                 Prossimi run →
-              </a>
+              </motion.a>
             </motion.div>
 
             <div style={{ position: 'absolute', bottom: '2.5rem', left: '3rem' }}>
               <span style={{
                 fontFamily: 'var(--serif)',
-                fontSize: '0.65rem',
-                fontWeight: 500,
-                letterSpacing: '0.22em',
-                textTransform: 'uppercase',
-                ...GOLD_TEXT,
-                opacity: 0.5,
+                fontSize: '0.65rem', fontWeight: 500,
+                letterSpacing: '0.22em', textTransform: 'uppercase',
+                ...GOLD_TEXT, opacity: 0.5,
               }}>Be the penguin.</span>
             </div>
           </motion.div>

@@ -5,6 +5,30 @@ import { motion } from 'framer-motion';
 const GOLD_BG = 'linear-gradient(160deg, #E8D08A 0%, #C9A55A 30%, #A07830 55%, #D4B06A 80%, #F0DC9A 100%)';
 const GOLD_TEXT = { background: GOLD_BG, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' } as React.CSSProperties;
 
+/* ── Button tokens ───────────────────────────────────── */
+const BTN_DARK: React.CSSProperties = {
+  width: '100%', padding: '0.8rem 1rem',
+  background: 'transparent',
+  border: '1px solid rgba(201,165,90,0.5)',
+  borderRadius: 0,
+  color: '#C9A55A',
+  fontFamily: 'var(--serif)',
+  fontSize: '0.78rem', fontWeight: 500, fontStyle: 'normal',
+  letterSpacing: '0.2em', textTransform: 'uppercase',
+  cursor: 'pointer',
+};
+const BTN_LIGHT: React.CSSProperties = {
+  width: '100%', padding: '0.8rem 1rem',
+  background: 'transparent',
+  border: '1px solid rgba(10,14,22,0.22)',
+  borderRadius: 0,
+  color: 'rgba(10,14,22,0.65)',
+  fontFamily: 'var(--serif)',
+  fontSize: '0.78rem', fontWeight: 500, fontStyle: 'normal',
+  letterSpacing: '0.2em', textTransform: 'uppercase',
+  cursor: 'pointer',
+};
+
 const events = [
   { title: 'Domenica Solitaria',  distance: '10K', location: 'Parco della Caffarella, Roma', time: '07:30', note: null,       badge: null,           highlighted: false },
   { title: 'La Grande Migrazione',distance: '21K', location: 'Appia Antica, Roma',           time: '06:00', note: null,       badge: 'Run del mese', highlighted: true  },
@@ -62,15 +86,10 @@ export default function Run() {
               )}
 
               <div style={{ marginTop: 'auto' }}>
-                <motion.button whileHover={{ opacity: 0.88, y: -1 }} whileTap={{ opacity: 1, y: 0 }}
-                  style={{
-                    width: '100%', padding: '0.75rem 1rem', borderRadius: '0.2rem',
-                    fontFamily: 'var(--serif)', fontSize: '0.85rem', fontWeight: 400, fontStyle: 'italic', letterSpacing: '0.06em',
-                    cursor: 'pointer',
-                    background: ev.highlighted ? GOLD_BG : 'transparent',
-                    color: ev.highlighted ? '#0A0E16' : 'rgba(10,14,22,0.88)',
-                    border: ev.highlighted ? 'none' : '1px solid rgba(10,14,22,0.2)',
-                  }}>
+                <motion.button
+                  whileHover={{ borderColor: '#C9A55A', color: '#C9A55A', y: -1 }}
+                  whileTap={{ y: 0 }}
+                  style={ev.highlighted ? BTN_DARK : BTN_LIGHT}>
                   Partecipo
                 </motion.button>
               </div>

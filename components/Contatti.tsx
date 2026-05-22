@@ -6,6 +6,19 @@ import { motion } from 'framer-motion';
 const GOLD_BG = 'linear-gradient(160deg, #E8D08A 0%, #C9A55A 30%, #A07830 55%, #D4B06A 80%, #F0DC9A 100%)';
 const GOLD_TEXT = { background: GOLD_BG, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' } as React.CSSProperties;
 
+/* ── Button token (sfondo chiaro → outline inchiostro) ── */
+const BTN_LIGHT: React.CSSProperties = {
+  padding: '0.8rem 2.2rem',
+  background: 'transparent',
+  border: '1px solid rgba(10,14,22,0.22)',
+  borderRadius: 0,
+  color: 'rgba(10,14,22,0.65)',
+  fontFamily: 'var(--serif)',
+  fontSize: '0.78rem', fontWeight: 500, fontStyle: 'normal',
+  letterSpacing: '0.2em', textTransform: 'uppercase',
+  cursor: 'pointer',
+};
+
 export default function Contatti() {
   const [form, setForm] = useState({ nome: '', email: '', messaggio: '' });
 
@@ -40,8 +53,10 @@ export default function Contatti() {
           <input type="email" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} style={fieldStyle} onFocus={onFocus} onBlur={onBlur} />
           <textarea placeholder="Il tuo messaggio" rows={4} value={form.messaggio} onChange={(e) => setForm({ ...form, messaggio: e.target.value })} style={{ ...fieldStyle, resize: 'vertical', fontFamily: 'var(--serif)' }} onFocus={onFocus} onBlur={onBlur} />
           <div style={{ paddingTop: '0.5rem' }}>
-            <motion.button type="submit" whileHover={{ opacity: 0.88, y: -1 }} whileTap={{ opacity: 1, y: 0 }}
-              style={{ padding: '0.7rem 1.8rem', background: GOLD_BG, color: '#0A0E16', fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 400, fontSize: '0.85rem', letterSpacing: '0.06em', border: 'none', borderRadius: '0.2rem', cursor: 'pointer' }}>
+            <motion.button type="submit"
+              whileHover={{ borderColor: '#C9A55A', color: '#C9A55A', y: -1 }}
+              whileTap={{ y: 0 }}
+              style={BTN_LIGHT}>
               Manda il messaggio →
             </motion.button>
           </div>

@@ -6,6 +6,20 @@ import { motion } from 'framer-motion';
 const GOLD_BG = 'linear-gradient(160deg, #E8D08A 0%, #C9A55A 30%, #A07830 55%, #D4B06A 80%, #F0DC9A 100%)';
 const GOLD_TEXT = { background: GOLD_BG, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' } as React.CSSProperties;
 
+/* ── Button token (sfondo scuro → outline oro) ───────── */
+const BTN_DARK: React.CSSProperties = {
+  alignSelf: 'center',
+  padding: '0.8rem 2.2rem',
+  background: 'transparent',
+  border: '1px solid rgba(201,165,90,0.5)',
+  borderRadius: 0,
+  color: '#C9A55A',
+  fontFamily: 'var(--serif)',
+  fontSize: '0.78rem', fontWeight: 500, fontStyle: 'normal',
+  letterSpacing: '0.2em', textTransform: 'uppercase',
+  cursor: 'pointer',
+};
+
 function InstagramIcon() {
   return (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" /></svg>);
 }
@@ -57,8 +71,10 @@ export default function Community() {
               style={{ width: '100%', padding: '0.85rem 0', fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 300, fontSize: '1rem', background: 'transparent', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.18)', color: 'rgba(255,255,255,0.85)', outline: 'none' }}
               onFocus={(e) => (e.currentTarget.style.borderBottomColor = '#C9A55A')}
               onBlur={(e)  => (e.currentTarget.style.borderBottomColor = 'rgba(255,255,255,0.18)')} />
-            <motion.button type="submit" whileHover={{ opacity: 0.88, y: -1 }} whileTap={{ opacity: 1, y: 0 }}
-              style={{ alignSelf: 'center', padding: '0.7rem 1.8rem', background: GOLD_BG, color: '#0A0E16', fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 400, fontSize: '0.85rem', letterSpacing: '0.06em', border: 'none', borderRadius: '0.2rem', cursor: 'pointer' }}>
+            <motion.button type="submit"
+              whileHover={{ borderColor: '#C9A55A', backgroundColor: 'rgba(201,165,90,0.06)', y: -1 }}
+              whileTap={{ y: 0 }}
+              style={BTN_DARK}>
               Entra nel branco →
             </motion.button>
           </form>
